@@ -16,10 +16,10 @@ USER_ID = DEFAULT_USER_ID
 
 @router.get("/daily", response_model=List[TaskOut])
 def get_daily_tasks(
-    date_str: Optional[str] = Query(alias="date", default=None),
+    target_date: Optional[date] = Query(alias="date", default=None),
     db: Session = Depends(get_db),
 ):
-    target_date = date.fromisoformat(date_str) if date_str else date.today()
+    target_date = target_date if target_date is not None else date.today()
     tasks = (
         db.query(Task)
         .filter(Task.user_id == USER_ID, Task.scheduled_date == target_date)

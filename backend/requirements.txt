@@ -1,4 +1,9 @@
-fastapi==0.115.6
+fastapi==0.135.4
+# Minimum version covering the audited Starlette security fixes.
+starlette==1.10.0
+# Keep the newly introduced transitive dependencies within the release cutoff.
+typing-inspection==0.4.4
+annotated-doc==0.0.5
 uvicorn[standard]==0.34.0
 sqlalchemy==2.0.36
 pydantic==2.10.3

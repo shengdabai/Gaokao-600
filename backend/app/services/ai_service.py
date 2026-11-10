@@ -8,6 +8,8 @@ import os
 from google import genai
 from google.genai import types
 
+from app.schemas.schemas import RecognizeQuestionResponse
+
 # Map of subject keys -> Chinese display names, shared by all prompt builders.
 SUBJECT_CN = {
     "chinese": "语文",
@@ -184,23 +186,21 @@ class AIService:
         raw = await asyncio.to_thread(_call)
 
         # Strip markdown code block markers if present
-        text = raw.strip()
+        text = (raw or "").strip()
         if text.startswith("```"):
             # Remove opening ```json or ```
-            first_newline = text.index("\n")
-            text = text[first_newline + 1 :]
+            text = text.partition("\n")[2]
         if text.endswith("```"):
             text = text[: -3]
         text = text.strip()
 
         try:
-            return json.loads(text)
+            return RecognizeQuestionResponse.model_validate(json.loads(text)).model_dump()
         except (json.JSONDecodeError, ValueError):
             # Model returned non-JSON output; surface a structured error
             # instead of crashing with a 500.
             return {
                 "error": "无法解析题目识别结果，请重试或换一张更清晰的图片。",
-                "raw": raw,
             }
 
     @staticmethod
