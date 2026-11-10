@@ -36,14 +36,14 @@ def create_wrong_question(payload: WrongQuestionCreate, db: Session = Depends(ge
 @router.get("", response_model=List[WrongQuestionOut])
 def list_wrong_questions(
     subject: Optional[str] = None,
-    status: Optional[str] = None,
+    status: Optional[MasteryStatus] = None,
     db: Session = Depends(get_db),
 ):
     query = db.query(WrongQuestion).filter(WrongQuestion.user_id == USER_ID)
     if subject:
         query = query.filter(WrongQuestion.subject == subject)
     if status:
-        query = query.filter(WrongQuestion.mastery_status == MasteryStatus(status))
+        query = query.filter(WrongQuestion.mastery_status == status)
     return query.order_by(WrongQuestion.created_at.desc()).all()
 
 

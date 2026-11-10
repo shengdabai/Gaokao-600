@@ -42,7 +42,8 @@ This repository supports productized learning workflows: diagnostic input, guide
 Use the commands that match the current project state:
 
 ```bash
-npm install
+cd frontend
+npm install --registry=https://registry.npmjs.org
 npm run dev
 npm start
 npm run build
@@ -51,11 +52,11 @@ npm run lint
 
 | Command | Purpose |
 |---|---|
-| `npm install` | Install project dependencies. |
+| `npm install --registry=https://registry.npmjs.org` | Install frontend dependencies (run from `frontend`). |
 | `npm run dev` | next dev |
 | `npm start` | next start |
 | `npm run build` | next build |
-| `npm run lint` | next lint |
+| `npm run lint` | eslint . |
 
 | 变量 | 说明 |
 |------|------|
